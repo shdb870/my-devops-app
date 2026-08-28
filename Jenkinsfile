@@ -13,6 +13,11 @@ pipeline {
                 echo 'Running application tests...'
             }
         }
+		
+		stage('Docker Build') {
+            steps {
+                sh 'docker build -t my-devops-app:ci-${BUILD_NUMBER} .'
+            }
+        }
     }
 }
-
