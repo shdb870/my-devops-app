@@ -22,12 +22,12 @@ pipeline {
 		                stage('Docker run') {
             steps {
 		sh 'docker rm -f my-devops-test || true'
-                sh 'docker run -d --name my-devops-test -p 5001:5000 my-devops-app:ci-${BUILD_NUMBER}'
+                sh 'docker run -d --name my-devops-test --network jenkins-net -p 5001:5000 my-devops-app:ci-${BUILD_NUMBER}'
             }
         }
 				                stage('Health Check') {
             steps {
-                sh 'curl -f http://localhost:5001'
+                sh 'curl -f http://my-devops-test:5000/health'
             }
         }
     }
