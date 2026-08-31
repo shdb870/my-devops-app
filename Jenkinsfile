@@ -22,7 +22,7 @@ pipeline {
 		                stage('Docker run') {
             steps {
 		sh 'docker rm -f my-devops-test || true'
-                sh 'docker run -d --name my-devops-test --network jenkins-net -p 5001:5000 my-devops-app:ci-${BUILD_NUMBER}'
+                sh 'docker run -d --name my-devops-test --network jenkins-net -p 5002:5000 my-devops-app:ci-${BUILD_NUMBER}'
             }
         }
 				                stage('Health Check') {
