@@ -17,7 +17,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t shdb870/my-devops-app:ci-${BUILD_NUMBER} .'
+                sh 'docker build -t shadab870/my-devops-app:ci-${BUILD_NUMBER} .'
             }
         }
 
@@ -35,14 +35,14 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                sh 'docker push shdb870/my-devops-app:ci-${BUILD_NUMBER}'
+                sh 'docker push shadab870/my-devops-app:ci-${BUILD_NUMBER}'
             }
         }
 
         stage('Docker Run') {
             steps {
                 sh 'docker rm -f my-devops-test || true'
-                sh 'docker run -d --name my-devops-test --network jenkins-net -p 5002:5000 shdb870/my-devops-app:ci-${BUILD_NUMBER}'
+                sh 'docker run -d --name my-devops-test --network jenkins-net -p 5002:5000 shadab870/my-devops-app:ci-${BUILD_NUMBER}'
             }
         }
 
