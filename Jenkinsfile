@@ -23,11 +23,13 @@ pipeline {
 
         stage('Docker Login') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USERNAME',
-                    passwordVariable: 'DOCKER_PASSWORD'
-                )]) {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )
+                ]) {
                     sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
                 }
             }
@@ -48,7 +50,20 @@ pipeline {
 
         stage('Health Check') {
             steps {
-                sh 'curl -f http://my-devops-test:5000/health'
+                sh '''
+                    for i in {1..10}; do
+                        if curl -f http://my-devops-test:5000/health; then
+                            echo "Health check passed"
+                            exit 0
+                        fi
+
+                        echo "Application not ready, retrying..."
+                        sleep 2
+                    done
+
+                    echo "Health check failed"
+                    exit 1
+                '''
             }
         }
     }
