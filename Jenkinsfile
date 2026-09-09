@@ -9,6 +9,15 @@ pipeline {
             }
         }
 
+        stage('Build Info') {
+            steps {
+                echo "Job: ${JOB_NAME}"
+                echo "Build Number: ${BUILD_NUMBER}"
+                echo "Workspace: ${WORKSPACE}"
+                echo "Git Commit: ${GIT_COMMIT}"
+            }
+        }
+
         stage('Test') {
             steps {
                 echo 'Running application tests...'
